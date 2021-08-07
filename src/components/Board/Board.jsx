@@ -1,31 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Cell } from '../Cell'
 
-const generateBoard = (columnCount, rowCount) => {
+const generateBoard = (size) => {
   const board = []
 
-  for (let i = 0; i < columnCount; i++) {
-    board.push(Array(rowCount).fill(0))
+  for (let i = 0; i < size; i++) {
+    board.push(Array(size).fill(0))
   }
 
   return board;
 }
 
-const populateBoard = (board, columns, rows, count) => {
+const populateBoard = (board, size) => {
 
-  for (let i = 0; i < count; i++) {
-    const randomY = Math.floor(Math.random() * columns)
-    const randomX = Math.floor(Math.random() * rows)
+  for (let i = 0; i < size * 2; i++) {
+    const getRandomNumber = () => Math.floor(Math.random() * size);
 
-    board[randomY][randomX] = 1
+    board[getRandomNumber()][getRandomNumber()] = 1;
   }
 }
 
-export function Board({ columns, rows }) {
-  const initialBoard = generateBoard(columns, rows);
-  populateBoard(initialBoard, columns, rows, 5)
+function getNextBoard(board) {
+  const newBoard = [];
+  console.log({ board })
+
+  for (let i = 0; i < board.length; i++) {
+    console.log('row')
+    for (let j = 0; j < board[i].length; j++) {
+      const cell = board[i][j];
+      console.log({ cell })
+    }
+  }
+}
+
+export function Board({ size }) {
+  const initialBoard = generateBoard(size);
+  populateBoard(initialBoard, size);
 
   const [board, setBoard] = useState(initialBoard);
+
+  useEffect(() => {
+    const setGeneration = () => {
+      const nextBoard = getNextBoard(board);
+
+      setBoard([...board]);
+    };
+    const timeout = setTimeout(setGeneration, 5000);
+
+    return function cleanup() {
+      clearTimeout(timeout)
+    }
+  }, [])
+
 
   const styles = {
     border: "solid 1px black",
