@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Board } from './components/Board'
 
-const SIZE = 5;
+const SIZE = 50;
 
 const styles = {
   width: "100vw",

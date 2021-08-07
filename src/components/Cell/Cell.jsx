@@ -8,8 +8,8 @@ export function Cell({ live }) {
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: `${color}`,
-    width: "2rem",
-    height: "2rem"
+    width: "1rem",
+    height: "1rem"
   }
 
   return <div style={styles} />

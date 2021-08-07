@@ -22,15 +22,80 @@ const populateBoard = (board, size) => {
 
 function getNextBoard(board) {
   const newBoard = [];
-  console.log({ board })
 
   for (let i = 0; i < board.length; i++) {
-    console.log('row')
+    const newRow = [];
+
     for (let j = 0; j < board[i].length; j++) {
+      let liveNeighbors = 0;
+
       const cell = board[i][j];
-      console.log({ cell })
+      const isCurrentlyAlive = Boolean(cell);
+      const isFirstRow = i === 0;
+      const isLastRow = i === board.length - 1;
+      const isFirstItem = j === 0;
+      const isLastItem = j === board[i].length - 1;
+
+      if (!isFirstRow) {
+        if (board[i - 1][j]) {
+          liveNeighbors++
+        }
+        if (board[i - 1][j - 1]) {
+          liveNeighbors++
+        }
+        if (board[i - 1][j + 1]) {
+          liveNeighbors++
+        }
+      }
+
+      if (!isLastRow) {
+        if (board[i + 1][j]) {
+          liveNeighbors++
+        }
+        if (board[i + 1][j - 1]) {
+          liveNeighbors++
+        }
+        if (board[i + 1][j + 1]) {
+          liveNeighbors++
+        }
+      }
+
+      if (!isFirstItem) {
+        if (board[i][j - 1]) {
+          liveNeighbors++
+        }
+      }
+
+      if (!isLastItem) {
+        if (board[i][j + 1]) {
+          liveNeighbors++
+        }
+      }
+
+      if (!isCurrentlyAlive && liveNeighbors !== 3) {
+        newRow.push(0)
+      }
+
+      if (!isCurrentlyAlive && liveNeighbors === 3) {
+        newRow.push(1)
+      }
+
+      if (isCurrentlyAlive && liveNeighbors > 3) {
+        newRow.push(0)
+      }
+
+      if (isCurrentlyAlive && liveNeighbors < 2) {
+        newRow.push(0)
+      }
+
+      if (isCurrentlyAlive && liveNeighbors > 1 && liveNeighbors < 4) {
+        newRow.push(1)
+      }
     }
+
+    newBoard.push(newRow);
   }
+  return newBoard;
 }
 
 export function Board({ size }) {
@@ -43,14 +108,14 @@ export function Board({ size }) {
     const setGeneration = () => {
       const nextBoard = getNextBoard(board);
 
-      setBoard([...board]);
+      setBoard(nextBoard);
     };
-    const timeout = setTimeout(setGeneration, 5000);
+    const timeout = setTimeout(setGeneration, 1000);
 
     return function cleanup() {
       clearTimeout(timeout)
     }
-  }, [])
+  })
 
 
   const styles = {
