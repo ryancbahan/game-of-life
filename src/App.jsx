@@ -1,22 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Board } from './components/Board'
 
-const SIZE = 50;
+const SIZE = 100;
+const FRAMERATE = 50;
 
 const styles = {
   width: "100vw",
   height: "100vh",
+  overflow: "none",
   display: "flex",
   justifyContent: "center",
   alignItems: "center"
 }
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <div style={styles}>
-      <Board size={SIZE} />
+      <Board size={SIZE} frameRate={FRAMERATE} />
     </div>
   )
 }
